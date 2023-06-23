@@ -21,7 +21,7 @@ zip_code_data = pd.read_csv('zip_code_database.csv')
 for _, row in zip_code_data.iterrows():
     state = row['state']
     zip_code = row['zip']
-    population = 0  # Initialize population as 0
+    population = 0  
     cursor.execute("INSERT INTO states (State, ZipCode, Population) VALUES (%s, %s, %s)",
                    (state, zip_code, population))
 
@@ -39,7 +39,7 @@ def search():
     return redirect(url_for('searchzip', searchzipcodes=user))
 
 
-# Get data from the database based on the zip code
+
 @app.route('/searchzipcodes/<searchzipcodes>')
 def searchzip(searchzipcodes):
     cursor.execute("SELECT * FROM `states` WHERE zip=%s", [searchzipcodes])
@@ -68,7 +68,7 @@ def updatestatepop(updateSTATE, updatePOP):
             return 'Population has been updated successfully for State: %s' % updateSTATE
 
 
-# Update webpage
+
 @app.route('/update', methods=['POST'])
 def update():
     user = request.form['ustate']
@@ -76,12 +76,10 @@ def update():
     return redirect(url_for('updatestatepop', updateSTATE=user, updatePOP=user2))
 
 
-# Root of web server and goes to template (login.html)
 @app.route('/')
 def root():
     return render_template('login.html')
 
 
-# Main
 if __name__ == '__main__':
     app.run(debug=True)
